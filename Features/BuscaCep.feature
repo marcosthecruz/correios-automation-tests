@@ -13,6 +13,7 @@ Funcionalidade: Busca de CEP nos Correios
 
     Quando preencher o CEP "80700000"
     E resolver o CAPTCHA manualmente
+    E clicar no botão Buscar
     Então devo visualizar a mensagem de CEP não encontrado
 
     Quando retornar para uma nova busca
@@ -20,6 +21,7 @@ Funcionalidade: Busca de CEP nos Correios
 
     Quando preencher o CEP "01013-001"
     E resolver o CAPTCHA manualmente
+    E clicar no botão Buscar
     Então devo visualizar o endereço esperado
 
     Quando retornar para uma nova busca

@@ -144,27 +144,33 @@ namespace Busca.Cep.Tests.Features
     await testRunner.AndAsync("resolver o CAPTCHA manualmente", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
 #line 16
+    await testRunner.AndAsync("clicar no botão Buscar", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+#line hidden
+#line 17
     await testRunner.ThenAsync("devo visualizar a mensagem de CEP não encontrado", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
-#line 18
+#line 19
     await testRunner.WhenAsync("retornar para uma nova busca", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
-#line 19
+#line 20
     await testRunner.ThenAsync("devo visualizar a página de consulta de CEP", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
-#line 21
+#line 22
     await testRunner.WhenAsync("preencher o CEP \"01013-001\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
-#line 22
+#line 23
     await testRunner.AndAsync("resolver o CAPTCHA manualmente", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
-#line 23
-    await testRunner.ThenAsync("devo visualizar o endereço esperado", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+#line 24
+    await testRunner.AndAsync("clicar no botão Buscar", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
 #line 25
+    await testRunner.ThenAsync("devo visualizar o endereço esperado", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+#line hidden
+#line 27
     await testRunner.WhenAsync("retornar para uma nova busca", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
-#line 26
+#line 28
     await testRunner.ThenAsync("devo visualizar a página de consulta de CEP", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
             }

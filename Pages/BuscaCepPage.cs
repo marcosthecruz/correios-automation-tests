@@ -1,6 +1,7 @@
 
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using NUnit.Framework;
 
 namespace Busca.Cep.Tests.Pages;
 
@@ -21,10 +22,6 @@ public class BuscaCepPage
         By.CssSelector("td[data-th='Logradouro/Nome']");
     private readonly By resultadoLocalidade =
         By.CssSelector("td[data-th='Localidade/UF']");
-
-
-
-
 
     public BuscaCepPage(IWebDriver driver)
     {
@@ -81,7 +78,6 @@ public class BuscaCepPage
         });
 
         botao.Click();
-        Thread.Sleep(5000);
     }
 
 
@@ -99,6 +95,75 @@ public class BuscaCepPage
                 elemento.Displayed &&
                 elemento.Text.Trim() == "Dados não encontrado");
         });
+    }
+
+
+
+    public void AguardarCaptchaManual()
+    {
+        TestContext.Progress.WriteLine("");
+        TestContext.Progress.WriteLine("========================================");
+        TestContext.Progress.WriteLine("       INTERVENÇÃO MANUAL - CAPTCHA");
+        TestContext.Progress.WriteLine("========================================");
+        TestContext.Progress.WriteLine("1. Acesse a janela do Chrome.");
+        TestContext.Progress.WriteLine("2. Digite o CAPTCHA apresentado.");
+        TestContext.Progress.WriteLine("3. Pressione TAB ao terminar.");
+        TestContext.Progress.WriteLine("4. NÃO clique no botão Buscar.");
+        TestContext.Progress.WriteLine("O Selenium continuará automaticamente.");
+        TestContext.Progress.WriteLine("Tempo máximo: 120 segundos.");
+        TestContext.Progress.WriteLine("========================================");
+
+
+        ((IJavaScriptExecutor)_driver).ExecuteScript(@"
+            if (!document.getElementById('aviso-automacao')) {
+                const aviso = document.createElement('div');
+                aviso.id = 'aviso-automacao';
+                aviso.style.cssText = `
+                    position: fixed;
+                    top: 10px;
+                    right: 10px;
+                    background: #fff3cd;
+                    color: #333;
+                    padding: 15px;
+                    border: 2px solid #ffc107;
+                    border-radius: 8px;
+                    z-index: 99999;
+                    font-size: 15px;
+                    max-width: 320px;
+                `;
+                aviso.innerText =
+                    'AUTOMAÇÃO DE TESTES\n' +
+                    '1. Preencha o CAPTCHA.\n' +
+                    '2. Pressione TAB ao terminar.\n' +
+                    '3. Não clique em Buscar.\n' +
+                    'O Selenium continuará automaticamente.';
+                document.body.appendChild(aviso);
+            }
+        ");
+
+
+        var wait = new WebDriverWait(
+            _driver, TimeSpan.FromMinutes(2));
+
+        wait.Until(driver =>
+        {
+            var campo = driver.FindElement(By.Id("captcha"));
+
+            bool preenchido = !string.IsNullOrWhiteSpace(
+                campo.GetDomProperty("value"));
+
+            bool saiuDoCampo =
+                (bool)((IJavaScriptExecutor)driver)
+                    .ExecuteScript(
+                        "return document.activeElement !== arguments[0];",
+                        campo)!;
+
+            return preenchido && saiuDoCampo;
+        });
+
+        Console.WriteLine("");
+        // Console.WriteLine("CAPTCHA preenchido. Continuando a automação...");
+        TestContext.Progress.WriteLine("CAPTCHA preenchido. Continuando a automação...");
     }
 
 

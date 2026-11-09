@@ -28,6 +28,7 @@ public class BuscaCepSteps
         _buscaCepPage.Acessar();
     }
 
+
     [Then("devo visualizar a página de consulta de CEP")]
     public void EntaoDevoVisualizarAPagina()
     {
@@ -52,45 +53,11 @@ public class BuscaCepSteps
     }
 
 
-
-
-
-
-
-
     [When("resolver o CAPTCHA manualmente")]
     public void QuandoResolverOCaptchaManualmente()
     {
-        Console.WriteLine(
-            "Preencha o CAPTCHA e clique em Buscar no navegador.");
-
-        var wait = new WebDriverWait(
-            _driver, TimeSpan.FromMinutes(2));
-
-        wait.PollingInterval = TimeSpan.FromMilliseconds(500);
-
-        wait.Until(driver =>
-        {
-            // Resultado de CEP inexistente
-            bool cepNaoEncontrado = driver.FindElements(
-                By.Id("mensagem-resultado-alerta"))
-                .Any(elemento =>
-                    elemento.Displayed &&
-                    elemento.Text.Contains("Dados não encontrado"));
-
-            // Resultado de CEP existente
-            bool cepEncontrado = driver.FindElements(
-                By.CssSelector("td[data-th='Logradouro/Nome']"))
-                .Any(elemento =>
-                    elemento.Displayed &&
-                    !string.IsNullOrWhiteSpace(elemento.Text));
-
-            return cepNaoEncontrado || cepEncontrado;
-        });
-
-        Console.WriteLine("Resultado da consulta identificado.");
+        _buscaCepPage.AguardarCaptchaManual();
     }
-
 
 
     [When("retornar para uma nova busca")]
@@ -98,9 +65,6 @@ public class BuscaCepSteps
     {
         _buscaCepPage.NovaBusca();
     }
-
-
-
 
 
     [Then("devo visualizar a mensagem de CEP não encontrado")]
@@ -111,12 +75,8 @@ public class BuscaCepSteps
             Is.True,
             "A mensagem de CEP não encontrado não foi exibida."
         );
-
-        Thread.Sleep(10000); 
     }
-
-
-
+    
 
     [Then("devo visualizar o endereço esperado")]
     public void EntaoDevoVisualizarOEnderecoEsperado()
@@ -136,11 +96,7 @@ public class BuscaCepSteps
             );
         });
 
-        Thread.Sleep(10000); 
     }
-
-
-
 
 
 }
