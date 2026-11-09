@@ -1,0 +1,31 @@
+
+# Compilação .NET
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# VS Code
+.vscode/
+
+# Resultados de testes
+TestResults/
+*.trx
+
+# Relatórios temporários
+coverage/
+coverage.*
+*.log
+
+# Sistema operacional
+Thumbs.db
+.DS_Store
+
+# Configurações e dados sensíveis
+.env
+.env.*
+appsettings.Local.json
+secrets.json
