@@ -16,6 +16,7 @@ O projeto foi estruturado utilizando boas práticas de automação, com separaç
 - **Reqnroll** — Desenvolvimento de cenários BDD com Gherkin
 - **NUnit** — Execução e validação dos testes
 - **Page Object Model (POM)** — Organização e reutilização de código
+- **Allure Report** — Relatórios HTML com resultados, passos BDD e screenshots automáticos
 - **Git / GitHub** — Versionamento e publicação do projeto
 - **Visual Studio Code** — Ambiente de desenvolvimento
 
@@ -216,6 +217,116 @@ As evidências estão organizadas na pasta `Evidencias/`.
 **Bloqueio na consulta de rastreamento**
 
 ![Bloqueio no rastreamento](Evidencias/04-rastreamento-bloqueado.png)
+
+
+## Relatórios de Testes — Allure Report
+
+O projeto possui integração com o **Allure Report**, permitindo gerar relatórios HTML com informações detalhadas sobre a execução dos testes automatizados.
+
+### Funcionalidades do relatório
+
+- **Dashboard:** visão geral dos testes executados, aprovados e reprovados.
+- **Cenários BDD:** exibição dos passos Gherkin executados pelo Reqnroll.
+- **Screenshots automáticos:** evidências capturadas após as validações dos CEPs.
+- **Evidências de falhas:** captura automática da tela quando um cenário apresenta erro.
+- **Tempo de execução:** acompanhamento da duração dos cenários.
+- **Detalhamento de erros:** informações que auxiliam na investigação de falhas.
+
+### Pré-requisitos
+
+Para gerar e visualizar os relatórios, é necessário ter:
+
+- .NET 10 SDK
+- Allure.Reqnroll configurado no projeto (restaurado automaticamente pelo NuGet)
+- Allure Report CLI 2 instalado no computador
+- Java compatível com a versão instalada do Allure CLI
+
+O Allure CLI pode ser obtido no repositório oficial:
+
+https://github.com/allure-framework/allure2/releases
+
+> **Observação:** o Allure CLI é uma ferramenta externa ao projeto e deve ser instalado separadamente. O pacote Allure.Reqnroll já está configurado nas dependências do projeto.
+
+### 1. Executar os testes e gerar os resultados
+
+No terminal, dentro da pasta do projeto, execute:
+
+```powershell
+dotnet test --filter "TestCategory=buscaCep" --logger "console;verbosity=normal" -- NUnit.ConsoleOut=0
+```
+
+Durante a execução, preencha manualmente os CAPTCHAs apresentados pelos Correios e pressione **TAB** para que o Selenium continue.
+
+Após finalizar, o Allure gerará os arquivos de resultados e as evidências em:
+
+```text
+bin/Debug/net10.0/allure-results/
+```
+
+### 2. Visualizar o relatório no navegador
+
+Com o Allure CLI instalado, execute:
+
+```powershell
+allure serve ".\bin\Debug\net10.0\allure-results"
+```
+
+O comando gera um relatório temporário e abre uma visualização no navegador.
+
+No relatório, é possível consultar os cenários executados, seus resultados, tempos de execução, passos BDD e screenshots anexados.
+
+### 3. Gerar um relatório HTML permanente
+
+Para salvar o relatório em uma pasta local, execute:
+
+```powershell
+allure generate ".\bin\Debug\net10.0\allure-results" -o ".\allure-report" --clean
+```
+
+O relatório será gerado na pasta:
+
+```text
+allure-report/
+```
+
+### 4. Abrir o relatório salvo
+
+Para abrir posteriormente o relatório gerado:
+
+```powershell
+allure open ".\allure-report"
+```
+
+### 5. Executar o Allure sem configurar o PATH
+
+Caso o comando `allure` não esteja disponível no terminal, é possível executá-lo diretamente pelo caminho de instalação.
+
+**Exemplo utilizado no ambiente de desenvolvimento:**
+
+```powershell
+& "C:\Ferramentas\allure-2.46.2\bin\allure.bat" serve ".\bin\Debug\net10.0\allure-results"
+```
+
+> O caminho acima é apenas um exemplo. Deve ser ajustado conforme o local e a versão do Allure instalados no computador.
+
+### Evidências disponíveis no Allure
+
+O relatório permite visualizar os screenshots anexados automaticamente durante a execução:
+
+| Evidência | Descrição |
+|-----------|-----------|
+| CEP 80700000 | Mensagem de CEP não encontrado |
+| CEP 01013-001 | Logradouro e localidade retornados |
+| Falha de cenário | Screenshot capturado antes do encerramento do navegador |
+
+### Observações importantes
+
+- Os screenshots são anexados automaticamente ao relatório Allure.
+- Não é necessário capturar manualmente as evidências a cada execução.
+- As pastas `allure-results/` e `allure-report/` contêm arquivos gerados automaticamente e não precisam ser versionadas no GitHub.
+- Para obter um relatório somente da execução atual, remova os resultados anteriores antes de executar os testes.
+- Como os cenários de CEP dependem de CAPTCHA manual, a geração dos relatórios ocorre após uma execução assistida.
+
 
 ## Limitações conhecidas
 

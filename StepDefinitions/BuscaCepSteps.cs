@@ -3,6 +3,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using Reqnroll;
 using Busca.Cep.Tests.Pages;
+using Busca.Cep.Tests.Support;
 using OpenQA.Selenium.Support.UI;
 
 
@@ -67,6 +68,7 @@ public class BuscaCepSteps
     }
 
 
+
     [Then("devo visualizar a mensagem de CEP não encontrado")]
     public void EntaoDevoVisualizarMensagemCepNaoEncontrado()
     {
@@ -75,8 +77,14 @@ public class BuscaCepSteps
             Is.True,
             "A mensagem de CEP não encontrado não foi exibida."
         );
+
+        EvidenceHelper.CapturarScreenshot(
+            _driver,
+            "CEP 80700000 - Nao encontrado"
+        );
     }
-    
+
+
 
     [Then("devo visualizar o endereço esperado")]
     public void EntaoDevoVisualizarOEnderecoEsperado()
@@ -93,6 +101,11 @@ public class BuscaCepSteps
                 _buscaCepPage.ValidarLocalidade("São Paulo/SP"),
                 Is.True,
                 "A localidade esperada não foi encontrada."
+            );
+
+            EvidenceHelper.CapturarScreenshot(
+                _driver,
+                "CEP 01013-001 - Endereco encontrado"
             );
         });
 

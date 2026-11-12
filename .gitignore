@@ -29,3 +29,7 @@ Thumbs.db
 .env.*
 appsettings.Local.json
 secrets.json
+
+# Relatórios do Allure
+allure-results/
+allure-report/
